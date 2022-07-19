@@ -1,0 +1,344 @@
+create table Branch(Branchid char(20) primary key,
+Branchname varchar(30) not null,
+HOD varchar(50) not null);
+
+
+
+create table Student(USN varchar(20) primary key,Name varchar(50) not null,
+address varchar(50) not null,
+Branchid char(20),
+Sem int(10),
+foreign key(Branchid) references Branch(Branchid));
+
+create table Author(Authorid int(10) primary key,
+Authorname varchar(50) not null,
+Country char(10),
+Age int(10));
+
+create table Book(Bookid varchar(20) primary key,
+Bookname varchar(50) not null,
+Authorid int(10),
+Publisher char(20),
+Branchid char(20),
+foreign key(Branchid) references Branch(Branchid),
+foreign key(Authorid)reference Author(Authorid));
+
+
+create table Borrow(USN varchar(20) ,
+Bookid char(20),
+Borrowed_date date,
+primary key(USN,Bookid),
+foreign key(USN) references Student(USN),
+foreign key(Bookid) 
+
+
+
+insert into Branch values('B1','MCA','DR.Vandana');
+insert into Branch values('B2','MCA','DR.Vandana');
+insert into Branch values('B3','MCA','DR.Vandana');
+insert into Branch values('B4','MBA','DR.Iyer');
+insert into Branch values('B5','CS','Dr.Shailesh');
+
+ysql> insert into Student values('4VP21MC001','Akash','kokkada','B1','1');
+
+mysql> insert into Student values('4VP21MC014','Geethanjali','Vittal','B2','2');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Student values('4VP21MC041','Chandan','Puttur','B3','4');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Student values('4VP21Mb010','Kruthan','Puttur','B4','4');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Student values('4VP21CS010','Dishmi','Vittal','B5','5');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Author values(1,'Ramez Elmasri','Arlinhton',51);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Author values(2,'Baidyanth Mishra','India',52);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Author values(2,'Ellis Horowits','US',41);
+ERROR 1062 (23000): Duplicate entry '2' for key 'Author.PRIMARY'
+mysql> insert into Author values(3,'Ellis Horowits','US',41);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Author values(4,'Deepak Kehamani','India',39);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Author values(5,'Yunus','Japan',34);
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql> insert into Book values('BK1','DBMS',1,'PEARSON','B1');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Book values('BK2','RESEARCH METHODOLOGY',2,'PEARSON','B2');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Book values('BK3','DATA STRUCTURE',3,'Mr Graw','B3');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Book values('BK4','ALGORITHM',3,'Mr Graw','B3');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Book values('BK5','Artificial Intelligence',4,'Mr Graw','B4');
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql> insert into Borrow values('4VP21MC001','BK1','2022-6-21');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Borrow values('4VP21MC014','BK2','2021-3-16');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Borrow values('4VP21MC041','BK3','2021-3-16');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Borrow values('4VP21MC041','BK4','2021-3-16')
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into Borrow values('4VP21Mb010','BK4','2021-3-16')
+    -> ;
+---------------------------------------------------------------------------------------------------------------------------- 
+
+\\mysql> select USN,Name from Student,Branch where Student. Branchid=Branch.Branchid and Branchname="mca";
+or
+mysql> select USN,Name from Student s,Branch b where s.Branchid=b.Branchid and Branchname="mca";
+mysql> select distinct Branchid from Student;
+ormysql> select * from Author where Country like "%nd%";
+
+mysql> select all Branchid from Student;
+
+mysql> select * from Author where Country like "_nd__";mysql> select age from Author where age   between 40 and 50;
+
+mysql> select * from Author where Country like "%nd%";//% 0 or 1 matches
+
+select age from Author where age   between 40 and 50;
+----------------------------------------------------------------------------------------------------------------------------------
+
+1)mysql> select USN,Name from Student,Branch where Student. Branchid=Branch.Branchid and Sem=2;
++------------+-------------+
+| USN        | Name        |
++------------+-------------+
+| 4VP21MC014 | Geethanjali |
++------------+-------------+
+
+2)mysql> select distinct name from Student,Borrow where Student.USN NOT IN (select USN from Borrow);
++--------+
+| name   |
++--------+
+| Dishmi |
++--------
+
+4)mysql> select Book.Authorid,Authorname,count(*) from Book,Author where Book.Authorid=Author.Authorid group by Book.Authorid;
++----------+------------------+----------+
+| Authorid | Authorname       | count(*) |
++----------+------------------+----------+
+|        1 | Ramez Elmasri    |        1 |
+|        2 | Baidyanth Mishra |        1 |
+|        3 | Ellis Horowits   |        2 |
+|        4 | Deepak Kehamani  |        1 |
++----------+------------------+----------+
+4 rows in set (0.00 sec)
+or
+mysql> select Book.Authorid,Authorname,count(*) as total from Book,Author where Book.Authorid=Author.Authorid group by Book.Authorid;
++----------+------------------+-------+
+| Authorid | Authorname       | total |
++----------+------------------+-------+
+|        1 | Ramez Elmasri    |     1 |
+|        2 | Baidyanth Mishra |     1 |
+|        3 | Ellis Horowits   |     2 |
+|        4 | Deepak Kehamani  |     1 |
++----------+------------------+-------+
+
+3)select Student.USN,Branchname,name,Bookname,Borrowed_date
+    from Student, Book,Borrow,Author,Branch 
+    where Student.USN=Borrow.USN
+    AND Student.Branchid=Branch.Branchid
+    AND Borrow.Bookid=Book.Bookid
+    AND Book.Authorid=Author.Authorid
+    and Student.Sem=2 and Branch.Branchname='MCA';
++------------+------------+-------------+----------------------+---------------+
+| USN        | Branchname | name        | Bookname             | Borrowed_date |
++------------+------------+-------------+----------------------+---------------+
+| 4VP21MC014 | MCA        | Geethanjali | RESEARCH METHODOLOGY | 2021-03-16    |
++------------+------------+-------------+----------------------+---------------+
+
+6)mysql> select * from Student where USN IN (select USN from Borrow group by USN having count(usn)>=2);
++------------+---------+---------+----------+------+
+| USN        | Name    | address | Branchid | Sem  |
++------------+---------+---------+----------+------+
+| 4VP21MC041 | Chandan | Puttur  | B3       |    4 |
++------------+---------+---------+----------+------+
+
+5)mysql> select Bookname from Book   order by Bookname desc;
++-------------------------+
+| Bookname                |
++-------------------------+
+| RESEARCH METHODOLOGY    |
+| DBMS                    |
+| DATA STRUCTURE          |
+| Artificial Intelligence |
+| ALGORITHM               |
++-------------------------+
+
+
+//mysql> select USN,Name from Student,Branch where Branchname="MCA" and Student.Branchid=Branch.Branchid order by Name desc;
++------------+-------------+
+| USN        | Name        |
++------------+-------------+
+| 4VP21MC014 | Geethanjali |
+| 4VP21MC041 | Chandan     |
+| 4VP21MC001 | Akash       |
++------------+-------------+
+3 rows in set (0.00 sec)
+//mysql> select USN from Student UNION select USN from Borrow;
++------------+
+| USN        |
++------------+
+| 4VP21MC001 |
+| 4VP21MC014 |
+| 4VP21MC041 |
+| 4VP21Mb010 |
+| 4VP21CS010 |
++------------+
+
+//select Student.USN,Branchname,name,Bookname,Borrowed_date
+    from Student, Book,Borrow,Author,Branch 
+    where Student.USN=Borrow.USN
+    AND Student.Branchid=Branch.Branchid
+    AND Borrow.Bookid=Book.Bookid
+    AND Book.Authorid=Author.Authorid
+    and Student.Sem=2 and Branch.Branchname='MCA';
+
+Tables:
+mysql> desc Student;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| USN      | varchar(20) | NO   | PRI | NULL    |       |
+| Name     | varchar(50) | NO   |     | NULL    |       |
+| address  | varchar(50) | NO   |     | NULL    |       |
+| Branchid | char(20)    | YES  | MUL | NULL    |       |
+| Sem      | int         | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc Book;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Bookid    | varchar(20) | NO   | PRI | NULL    |       |
+| Bookname  | varchar(50) | NO   |     | NULL    |       |
+| Authorid  | int         | YES  | MUL | NULL    |       |
+| Publisher | char(20)    | YES  |     | NULL    |       |
+| Branchid  | char(20)    | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc Borrow;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| USN           | varchar(20) | NO   | PRI | NULL    |       |
+| Bookid        | char(20)    | NO   | PRI | NULL    |       |
+| Borrowed_date | date        | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc Author;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Authorid   | int         | NO   | PRI | NULL    |       |
+| Authorname | varchar(50) | NO   |     | NULL    |       |
+| Country    | char(10)    | YES  |     | NULL    |       |
+| Age        | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc Branch;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Branchid   | char(20)    | NO   | PRI | NULL    |       |
+| Branchname | varchar(30) | NO   |     | NULL    |       |
+| HOD        | varchar(50) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+Insert tables
+mysql> select * from Student;
++------------+-------------+---------+----------+------+
+| USN        | Name        | address | Branchid | Sem  |
++------------+-------------+---------+----------+------+
+| 4VP21CS010 | Dishmi      | Vittal  | B5       |    5 |
+| 4VP21Mb010 | Kruthan     | Puttur  | B4       |    4 |
+| 4VP21MC001 | Akash       | kokkada | B1       |    1 |
+| 4VP21MC014 | Geethanjali | Vittal  | B2       |    2 |
+| 4VP21MC041 | Chandan     | Puttur  | B3       |    4 |
++------------+-------------+---------+----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Book;
++--------+-------------------------+----------+-----------+----------+
+| Bookid | Bookname                | Authorid | Publisher | Branchid |
++--------+-------------------------+----------+-----------+----------+
+| BK1    | DBMS                    |        1 | PEARSON   | B1       |
+| BK2    | RESEARCH METHODOLOGY    |        2 | PEARSON   | B2       |
+| BK3    | DATA STRUCTURE          |        3 | Mr Graw   | B3       |
+| BK4    | ALGORITHM               |        3 | Mr Graw   | B3       |
+| BK5    | Artificial Intelligence |        4 | Mr Graw   | B4       |
++--------+-------------------------+----------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Borrow;
++------------+--------+---------------+
+| USN        | Bookid | Borrowed_date |
++------------+--------+---------------+
+| 4VP21Mb010 | BK4    | 2021-03-16    |
+| 4VP21MC001 | BK1    | 2022-06-21    |
+| 4VP21MC014 | BK2    | 2021-03-16    |
+| 4VP21MC041 | BK3    | 2021-03-16    |
+| 4VP21MC041 | BK4    | 2021-03-16    |
++------------+--------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Author;
++----------+------------------+-----------+------+
+| Authorid | Authorname       | Country   | Age  |
++----------+------------------+-----------+------+
+|        1 | Ramez Elmasri    | Arlinhton |   51 |
+|        2 | Baidyanth Mishra | India     |   52 |
+|        3 | Ellis Horowits   | US        |   41 |
+|        4 | Deepak Kehamani  | India     |   39 |
+|        5 | Yunus            | Japan     |   34 |
++----------+------------------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Branch;
++----------+------------+-------------+
+| Branchid | Branchname | HOD         |
++----------+------------+-------------+
+| B1       | MCA        | DR.Vandana  |
+| B2       | MCA        | DR.Vandana  |
+| B3       | MCA        | DR.Vandana  |
+| B4       | MBA        | DR.Iyer     |
+| B5       | CS         | Dr.Shailesh |
++----------+------------+-------------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
