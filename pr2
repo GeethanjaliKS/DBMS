@@ -1,0 +1,122 @@
+create table student (USN varchar(20) primary key,
+Name char(50) not null,
+DOB date not null,
+Branch char(10),
+M1 float(5,2),M2 float(5,2),M3 float(5,2),
+total float(5,2),GPA float(5,2));
+
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| USN    | varchar(20) | NO   | PRI | NULL    |       |
+| Name   | char(50)    | NO   |     | NULL    |       |
+| DOB    | date        | NO   |     | NULL    |       |
+| Branch | char(10)    | YES  |     | NULL    |       |
+| M1     | float(5,2)  | YES  |     | NULL    |       |
+| M2     | float(5,2)  | YES  |     | NULL    |       |
+| M3     | float(5,2)  | YES  |     | NULL    |       |
+| total  | float(5,2)  | YES  |     | NULL    |       |
+| GPA    | float(5,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+
+
+insert into student(USN,Name,DOB,Branch,M1,M2,M3) values('4VP21MC001','Aishwarya','2000-2-28','MCA',45,78,49)
+
+insert into student(USN,Name,DOB,Branch,M1,M2,M3) values('4VP21MC002','Akash','1999-4-7','MCA',90,78,49);
+
+insert into student(USN,Name,DOB,Branch,M1,M2,M3) values('4VP21MC0018','Jhansi','2000-11-18','MCA',89,90,100);
+
+insert into student(USN,Name,DOB,Branch,M1,M2,M3) values('4VP21MB020','Jeevan','2000-9-19','MBA',89,25,89);
+
+insert into student(USN,Name,DOB,Branch,M1,M2,M3) values('4VP21MB030','Sakshath','2000-3-30','MBA',100,56,90);
+
+insert into student(USN,Name,DOB,Branch,M1,M2,M3) values('4VP21MB029','Rakshith','2000-4-25','MBA',67,34,90);
+
+insert into student(USN,Name,DOB,Branch,M1,M2,M3) values('4VP21EC003','Deepthi','2000-4-25','CS',67,34,90);
++-------------+-----------+------------+--------+--------+-------+--------+-------+------+
+| USN         | Name      | DOB        | Branch | M1     | M2    | M3     | total | GPA  |
++-------------+-----------+------------+--------+--------+-------+--------+-------+------+
+| 4VP21EC003  | Deepthi   | 2000-04-25 | CS     |  67.00 | 34.00 |  90.00 |  NULL | NULL |
+| 4VP21MB020  | Jeevan    | 2000-09-19 | MBA    |  89.00 | 25.00 |  89.00 |  NULL | NULL |
+| 4VP21MB029  | Rakshith  | 2000-04-25 | MBA    |  67.00 | 34.00 |  90.00 |  NULL | NULL |
+| 4VP21MB030  | Sakshath  | 2000-03-30 | MBA    | 100.00 | 56.00 |  90.00 |  NULL | NULL |
+| 4VP21MC001  | Aishwarya | 2000-02-28 | MCA    |  45.00 | 78.00 |  49.00 |  NULL | NULL |
+| 4VP21MC0018 | Jhansi    | 2000-11-18 | MCA    |  89.00 | 90.00 | 100.00 |  NULL | NULL |
+| 4VP21MC002  | Akash     | 1999-04-07 | MCA    |  90.00 | 78.00 |  49.00 |  NULL | NULL |
++-------------+-----------+------------+--------+--------+-------+--------+-------+------+
+ mysql> update student SET total=m1+m2+m3;
++-------------+-----------+------------+--------+--------+-------+--------+--------+------+
+| USN         | Name      | DOB        | Branch | M1     | M2    | M3     | total  | GPA  |
++-------------+-----------+------------+--------+--------+-------+--------+--------+------+
+| 4VP21EC003  | Deepthi   | 2000-04-25 | CS     |  67.00 | 34.00 |  90.00 | 191.00 | NULL |
+| 4VP21MB020  | Jeevan    | 2000-09-19 | MBA    |  89.00 | 25.00 |  89.00 | 203.00 | NULL |
+| 4VP21MB029  | Rakshith  | 2000-04-25 | MBA    |  67.00 | 34.00 |  90.00 | 191.00 | NULL |
+| 4VP21MB030  | Sakshath  | 2000-03-30 | MBA    | 100.00 | 56.00 |  90.00 | 246.00 | NULL |
+| 4VP21MC001  | Aishwarya | 2000-02-28 | MCA    |  45.00 | 78.00 |  49.00 | 172.00 | NULL |
+| 4VP21MC0018 | Jhansi    | 2000-11-18 | MCA    |  89.00 | 90.00 | 100.00 | 279.00 | NULL |
+| 4VP21MC002  | Akash     | 1999-04-07 | MCA    |  90.00 | 78.00 |  49.00 | 217.00 | NULL |
++-------------+-----------+------------+--------+--------+-------+--------+--------+------+
+mysql> update student SET GPA=(total/3);
++-------------+-----------+------------+--------+--------+-------+--------+--------+-------+
+| USN         | Name      | DOB        | Branch | M1     | M2    | M3     | total  | GPA   |
++-------------+-----------+------------+--------+--------+-------+--------+--------+-------+
+| 4VP21EC003  | Deepthi   | 2000-04-25 | CS     |  67.00 | 34.00 |  90.00 | 191.00 | 63.67 |
+| 4VP21MB020  | Jeevan    | 2000-09-19 | MBA    |  89.00 | 25.00 |  89.00 | 203.00 | 67.67 |
+| 4VP21MB029  | Rakshith  | 2000-04-25 | MBA    |  67.00 | 34.00 |  90.00 | 191.00 | 63.67 |
+| 4VP21MB030  | Sakshath  | 2000-03-30 | MBA    | 100.00 | 56.00 |  90.00 | 246.00 | 82.00 |
+| 4VP21MC001  | Aishwarya | 2000-02-28 | MCA    |  45.00 | 78.00 |  49.00 | 172.00 | 57.33 |
+| 4VP21MC0018 | Jhansi    | 2000-11-18 | MCA    |  89.00 | 90.00 | 100.00 | 279.00 | 93.00 |
+| 4VP21MC002  | Akash     | 1999-04-07 | MCA    |  90.00 | 78.00 |  49.00 | 217.00 | 72.33 |
++-------------+-----------+------------+--------+--------+-------+--------+--------+-------+
+select * from student where DOB='1999-04-07';
+mysql> select Name from student where DOB='1999-04-07';
++-------+
+| Name  |
++-------+
+| Akash |
++-------+
+
+select Name from student where Branch='CS';
+
+
+| Name    |
++---------+
+| Deepthi |
++---------+
+
+select Branch,MAX(GPA) from student group by Branch;
+
++---------++--------+----------+
+| Branch | MAX(GPA) |
++--------+----------+
+| CS     |    63.67 |
+| MBA    |    82.00 |
+| MCA    |    93.00 |
++--------+----------+
+
+select * from student where Name like 'S%';
++------------+----------+------------+--------+--------+-------+-------+--------+-------+
+| USN        | Name     | DOB        | Branch | M1     | M2    | M3    | total  | GPA   |
++------------+----------+------------+--------+--------+-------+-------+--------+-------+
+| 4VP21MB030 | Sakshath | 2000-03-30 | MBA    | 100.00 | 56.00 | 90.00 | 246.00 | 82.00 |
++------------+----------+------------+--------+--------+-------+-------+--------+-------+
+
+
+
+
+mysql> select * from student where Name like '%ar%';
++------------+-----------+------------+--------+-------+-------+-------+--------+-------+
+| USN        | Name      | DOB        | Branch | M1    | M2    | M3    | total  | GPA   |
++------------+-----------+------------+--------+-------+-------+-------+--------+-------+
+| 4VP21MC001 | Aishwarya | 2000-02-28 | MCA    | 45.00 | 78.00 | 49.00 | 172.00 | 57.33 |
++------------+-----------+------------+--------+-------+-------+-------+--------+-------+
+
+
+
+
+delete from student where USN='4VP21MC002';
+
+
+
+
+
